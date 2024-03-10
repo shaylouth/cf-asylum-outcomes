@@ -1,8 +1,5 @@
 # Public Health & U.S. Asylum Outcomes Project
 
-## Abstract
-
-
 ## Data Sources
 
 **DHS Data** - This dataset from the U.S. Department of Homeland Security contains annual metrics for asylum seekers' Credible Fear Interview outcomes. Countries represented include the top fifteen most common countries of origin for asylum seekers in the U.S., as well as an "all other nationalities" category. Three outcomes are reported - credible fear (CF) found, CF not found, and closed (when asylum applications are closed) - as well as the total of these three outcomes, denoted as "completed." 
