@@ -6,19 +6,19 @@
 	cls
 	clear all
 	version 17.0
-	//global root "C:\STATA\Stata Code Sample"
-	global root "/Users/shayleelouth/Desktop/STATA/Stata Code Sample"
-	cd "/Users/shayleelouth/Desktop/STATA/Stata Code Sample"
+	cd "/Users/shayleelouth/Desktop/cf-asylum-outcomes"
 	
 /*************************************************************************
 						Cleaning UNHCR dataset
 **************************************************************************/
 
-	//import delimited "$root\population.csv", case(preserve) clear
+	cd "raw_data"
 	import delimited "population.csv", case(preserve) clear
 
-	drop v4 v5 // dropping empty variable categories for receiving country
+	// dropping empty variable categories for receiving country
+	drop v4 v5 
 	
+	// naming variables
 	rename v1 year
 	rename v2 country
 	rename v3 ISO
@@ -30,7 +30,8 @@
 	rename v11 host
 	rename v12 others
 	
-	drop if _n<15 // dropping observations containing dataset descriptions & varnames
+	// dropping observations containing dataset descriptions & varnames
+	drop if _n<15 
 	
 	// correcting variable types and setting "-" to missing values
 	destring year refugees asylum_seekers IDPs, replace 
@@ -40,7 +41,7 @@
 	replace country="Dominican Republic" if country=="Dominican Rep." 
 	replace country="Venezuela" if country=="Venezuela (Bolivarian Republic of)"
 	
-	//save "$root\UNHCR.dta", replace 
+	cd "../clean_data"
 	save "UNHCR.dta", replace
 clear
 
@@ -48,10 +49,10 @@ clear
 						Cleaning Region & ISO Data
 **************************************************************************/
 
-	//import delimited "$root\all.csv"
+	cd "../raw_data"
 	import delimited "all.csv"
 
-	// Dropping unnecessary
+	// Dropping unnecessary variables
 	rename alpha3 ISO 
 	drop name iso_31662 countrycode regioncode subregioncode intermediateregioncode
 
@@ -63,7 +64,7 @@ clear
 	encode subregion, gen(subregion1)
 	encode intermediateregion, gen(intregion1)
 	
-	//save "$root\ISO.dta", replace
+	cd "../clean_data"
 	save "ISO.dta", replace
 clear 
 
@@ -71,14 +72,14 @@ clear
 							Cleaning DHS Data
 **************************************************************************/ 
 
-	//import delimited "$root\DoHSdata.csv", case(preserve) clear
+	cd "../raw_data"
 	import delimited "DoHSdata.csv", case(preserve) clear
 
 * Renaming variables in preparation to reshape data from wide to long form
 	rename v1 country
 	recast str country
 	
-	// loops to rename all variables representing completed cases to completed[year] format, repeating for other case categories
+* Loops to rename all variables representing completed cases to completed[year] format, repeating for other case categories
 	forvalues x = 2(4)25 {   
 		local year = v`x'[2]
 		rename v`x' completed`year'
@@ -117,6 +118,7 @@ clear
 	destring closed, replace ignore(`","') force
 		la var closed "Asylum cases closed"
 
+	cd "../clean_data"
 	save "DHS.dta", replace
 clear
 		
@@ -127,9 +129,7 @@ clear
 
 * Joining UNHCR data with DoHS data by country and year
 
-	//joinby country year using "$root\UNHCR.dta"
 	joinby country year using "UNHCR.dta"
-	//joinby ISO using "$root\ISO.dta"
 	joinby ISO using "ISO.dta"
 	
 * Creating new variables 
@@ -172,5 +172,5 @@ clear
 	xtset country1 year
 	xtdescribe
 	
-	//save "$root\top15panel.dta", replace // Saving merged data
-	save "top15panel.dta", replace // Saving merged data
+
+	save "top15panel.dta", replace 

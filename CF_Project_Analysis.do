@@ -6,15 +6,13 @@
 	cls
 	clear all
 	version 17.0
-	//global root "C:\STATA\Stata Code Sample"
-	global root "/Users/shayleelouth/Desktop/STATA/Stata Code Sample"
-	cd "/Users/shayleelouth/Desktop/STATA/Stata Code Sample"
+	//global root "/Users/shayleelouth/Desktop/cf-asylum-outcomes"
+	cd "/Users/shayleelouth/Desktop/cf-asylum-outcomes/clean_data"
 
 /*************************************************************************
 							Summary Statistics
 **************************************************************************/
-
-	//use "$root\top15panel.dta"
+	
 	use "top15panel.dta"
 
 	*-------------------------------------------------------------------
@@ -39,16 +37,40 @@
 /************************************************************************
 						Visualizing the Dataset
 *************************************************************************/
+	cd "../graphs"
+	
+* Graphing the shifts in total displaced populations by country over time (Graph A)
+	// Matrix version
+	xtline UNHCRtotal, xtitle("Year") ///
+		byopts(title("Total Displaced Populations by Country Over Time"))
+		graph export xtUNHCRtotal.png, replace
+		
+	// Overlay version
+	xtline UNHCRtotal, overlay xtitle("Year") ///
+		title("Total Displaced Populations by Country (Overlay)")
+		graph export xtUNHCRtotal_overlay.png, replace
+	
+* Graph A without Venezuela or Colombia to look at countries with smaller displaced populations (Graph B)
+	// Matrix version
+		xtline UNHCRtotal if !inlist(country, "Venezuela", "Colombia"), ///
+			byopts(title("Total UNHCR Displaced without VZ or CL")) xtitle("Year")
+			graph export xtUNHCR_noC_noV.png, replace 
+		
+	// Overlay version
+		xtline UNHCRtotal if !inlist(country, "Venezuela", "Colombia"), ///
+			overlay title("Total UNHCR Displaced without VZ or CL (Overlay)")
+			graph export xtUNHCR_noC_noV_overlay.png, replace 
+	
+* Graphing U.S. asylum cases as a proportion of global displaced population by year and country (Graph C)
+	twoway scatter completed_UNHCR year, mlabel(country) title("Completed DHS Cases to UNHCR Total Ratio")
+		graph export scatter_comp_UNHCR.png, replace
+		
+* Graphing percent of cases represented by each outcome over time by country (Graph G)
+	xtline found_completed not_completed closed_completed, byopts(title("% Cases by CF Outcome"))
+		graph export cf_outcome_proportion_matrix.png, replace
+	
+* Graphs with collapsed data
 
-	// Graphing the shifts in total displaced populations by country over time (Graph A)
-	xtline UNHCRtotal, title("UNHCR Total Displaced Population") //saving(xtUNHCRtotal.png) 
-	
-	// Graph A without Venezuela or Colombia to look at countries with smaller displaced populations (Graph B)
-	xtline UNHCRtotal if !inlist(country, "Venezuela", "Colombia"), title("Total UNHCR Displaced without VZ or CL") //saving(xtUNHCR_noC_noV.png) 
-	
-	// Graphing U.S. asylum cases as a proportion of global displaced population by year and country (Graph C)
-	twoway scatter completed_UNHCR year, mlabel(country) title("Completed DHS Cases to UNHCR Total Ratio") //saving(scatter_comp_UNHCR.png)
-	
 	// Subsetting annual data summed across all fifteen countries
 	collapse (sum) completed CFfound CFnotfound closed UNHCRtotal asylum_seekers, by(year)
 		gen found_completed= CFfound/completed
@@ -56,24 +78,25 @@
 		gen closed_completed= closed/completed
 		gen notfound_completed= CFnotfound/completed
 		
-		// Graphing trends in global displaced population totals over time (Graph D)
-		twoway line UNHCRtotal asylum_seekers year, title("Total Displaced Pop. for Top 15 Countries")  //saving(Total_UNHCR.png)
+	// Graphing trends in global displaced population totals over time (Graph D)
+		twoway line UNHCRtotal asylum_seekers year, title("Total Displaced Pop. for Top 15 Countries") 
+			graph export Total_UNHCR.png, replace
 		
-		// Graphing share of global displaced population processed by DHS asylum over time (Graph E)
-		twoway line completed_UNHCR year, title("Proportion Completed to Displaced (Total Top 15)") //saving(Total_completed_UNHCR.png)
+	// Graphing share of global displaced population processed by DHS asylum over time (Graph E)
+		twoway line completed_UNHCR year, title("Proportion Completed to Displaced (Total Top 15)") 
+			graph export Total_completed_UNHCR.png, replace 
 		
-		// Graphing percent of cases represented by each interview outcome over time (Graph F)
-		twoway line found_completed closed_completed notfound_completed year, title("% Asylum Cases by Outcome (Total Top 15)") //saving(Total_CfOutcomes.png) 
+	// Graphing percent of cases represented by each interview outcome over time (Graph F)
+		twoway line found_completed closed_completed notfound_completed year, ///
+			title("% Asylum Cases by Outcome (Total Top 15)")
+			graph export Total_CfOutcomes.png, replace
 		
-		clear
-		//use "$root\top15panel.dta"
-		use "top15panel.dta"
-	
-	// Graphing percent of cases represented by each outcome over time by country (Graph G)
-	xtline found_completed not_completed closed_completed, title("% Cases by CF Outcome")
 /***********************************************************************
 								Regressions
 ************************************************************************/
+	clear
+	cd "../clean_data"
+	use "top15panel.dta"
 
 * Fixed Effects Estimator
 	xtreg found_decided asylum_seekers Cen_Am Europe South_Am Asia covid_year, fe
