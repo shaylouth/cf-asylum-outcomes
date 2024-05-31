@@ -17,23 +17,19 @@ This respository contains two code files, one to clean the data (CF_project_clea
 **Directory**
 <ul> 
   <li><b>CF-project-cleaning.do</b> - Stata code file to clean the raw data, resulting in the code files contained in <i> clean_data </i>
-    <ul> Input: </ul>
-  </li>
+    <ul> 
+      <li>Input: <i>raw_data</i></li>
+      <li>Output: <i>clean_data</i></li>
+    </ul>
   
-  <li><b>CF_project_analysis.do</b> - Stata code file to run the analysis used in the associated paper. Because the cleaned data is already saved in this repository, this file can be run on it's own without prior use of the cleaning file.</li>
-  <li><b></li></li>
+  <li><b>CF_project_analysis.do</b> - Stata code file to run the analysis used in the associated paper. Because the cleaned data is already saved in this repository, this file can be run on it's own without prior use of the cleaning file.
+    <ul> 
+      <li>Input: <i>clean_data</i></li>
+      <li>Output: <i>graphs</i></li>
+    </ul>
+  </li>
+  <li><b></b></li>
 </ul>
-
-
-
-<dl>
-  <dt><u>CF_project_cleaning.do</u></dt>
-  <dd>Stata code file to clean the raw data, resulting in the code files contained in <i> clean_data</dd>
-    <dt><u>CF_project_cleaning.do</u></dt>
-  <dd>Stata code file to clean the raw data, resulting in the code files contained in <i> clean_data</dd>
-    <dt><u>CF_project_cleaning.do</u></dt>
-  <dd>Stata code file to clean the raw data, resulting in the code files contained in <i> clean_data</dd>
-</dl>
 
 
 ## Data Sources
