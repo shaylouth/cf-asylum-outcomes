@@ -28,7 +28,16 @@ This respository contains two code files, one to clean the data (CF_project_clea
       <li>Output: <i>graphs</i></li>
     </ul>
   </li>
-  <li><b></b></li>
+  
+  <li><b>raw_data</b> - Raw data files to be used in <i>CF_project_cleaning.do</i>. See Data Sources below for more details.
+  </li>
+  
+  <li><b>clean_data</b> - Clean data files in .dta format to be used in <i>CF_project_analysis.do</i>. Produced by <i>CF_project_cleaning.do</i>
+  </li>
+  
+  <li><b>graphs</b> - Contains the graphs produced by <i>CF_project_analysis.do</i>. Running the analysis code file with modifications will replace the existing graphs.
+  </li>
+  
 </ul>
 
 
