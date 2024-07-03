@@ -16,7 +16,7 @@ This respository contains two code files, one to clean the data (CF_project_clea
 
 **Directory**
 <ul> 
-  <li><b>CF-project-cleaning.do</b> - Stata code file to clean the raw data, resulting in the code files contained in <i> clean_data </i>
+  <li><b>CF_project_cleaning.do</b> - Stata code file to clean the raw data, resulting in the code files contained in <i> clean_data </i>
     <ul> 
       <li>Input: <i>raw_data</i></li>
       <li>Output: <i>clean_data</i></li>
