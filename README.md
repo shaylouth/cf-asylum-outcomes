@@ -6,7 +6,7 @@
 
 ## Description
 
-This repository contains the code and raw data needed to reproduce the results of "Factors Influencing Asylum Outcomes in the United States: Preliminary Analysis" by Shaylee Louth, as well as several products of the code. The goal of the project was to observe fluctuations in the outcomes of a critical stage of the U.S. asylum process, the Credible Fear Interview, and identify potential relationships between these outcomes and a range of factors. The focus of this preliminary stage was on observing fluctuations in asylum outcomes during the COVID-19 pandemic, which is the focus of the paper as well. The paper is included in this repository under the name "COVID19_Asylum_Outcomes.pdf".
+This repository contains the code and raw data needed to reproduce the results of "COVID-19 and Asylum Outcomes in the United States: Preliminary Analysis" by Shaylee Louth, as well as several products of the code. The focus of this preliminary stage was on observing fluctuations in asylum outcomes during the COVID-19 pandemic, which is the focus of the paper as well. The paper is included in this repository under the name "COVID19_Asylum_Outcomes.pdf".
 
 Below I have included a directory of the files in this respository, instructions to run the code, and some additional information about the data sources of this project. If you have any questions regarding this project, please do not hesitate to reach out to shaylee.louth@gmail.com.
 
