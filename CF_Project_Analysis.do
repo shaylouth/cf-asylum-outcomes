@@ -84,7 +84,7 @@
 		
 	// Graphing share of global displaced population processed by DHS asylum over time (Graph E)
 		twoway line completed_UNHCR year, title("Proportion Completed to Displaced (Total Top 15)") 
-			graph export Total_completed_UNHCR.png, replace 
+			graph export Total_completed_UNHCR.png, replace
 		
 	// Graphing percent of cases represented by each interview outcome over time (Graph F)
 		twoway line found_completed closed_completed notfound_completed year, ///
@@ -97,14 +97,19 @@
 	clear
 	cd "../clean_data"
 	use "top15panel.dta"
+		
+* Model with interaction between covid-19 and region
+	xtreg found_decided covid_year##i.intregion1 asylum_seekers i.year, fe
+		estimates store interaction
 
 * Fixed Effects Estimator
-	xtreg found_decided asylum_seekers Cen_Am Europe South_Am Asia covid_year, fe
+	xtreg found_decided covid_year asylum_seekers i.year, fe
 		estimates store fixed
 
 * Random Effects Estimator 
-	xtreg found_decided asylum_seekers Cen_Am Europe South_Am Asia covid_year, re
+	xtreg found_decided covid_year asylum_seekers i.year, re
 		estimates store random
 		
 * Hausman Test to determine if FE or RE is preferred
 	hausman fixed random
+

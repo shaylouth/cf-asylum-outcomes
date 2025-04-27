@@ -56,7 +56,7 @@ clear
 	rename alpha3 ISO 
 	drop name iso_31662 countrycode regioncode subregioncode intermediateregioncode
 
-	// Adding subregion to intermediateregion for countnries missing intermediateregion 
+	// Adding subregion to intermediateregion for countnries missing intermediateregion
 	replace intermediateregion = subregion if intermediateregion=="" 
 	
 	// Assigning numeric categorical values
@@ -108,7 +108,7 @@ clear
 * Reshaping Dataset
 	reshape long completed CFfound CFnotfound closed, i(country) j(year)
 	
-* Correcting variable types & converting withheld "D" values to missing  
+* Correcting variable types & converting withheld "D" values to missing
 	destring completed, replace ignore(`","') force
 		la var completed "Interviews completed by DHS"
 	destring CFfound, replace ignore(`","') force
@@ -132,13 +132,13 @@ clear
 	joinby country year using "UNHCR.dta"
 	joinby ISO using "ISO.dta"
 	
-* Creating new variables 
+* Creating new variables
 
-	// Expanding categorical region variable into indicator variables 
+	// Expanding categorical region variable into indicator variables
 	xi i.intregion1
 	rename (_Iintregion_3 _Iintregion_8 _Iintregion_16 _Iintregion_19) (Cen_Am Europe South_Am Asia)
 
-	// Comparing DHS Outcomes to UNHCR Total Displaced Population 
+	// Comparing DHS Outcomes to UNHCR Total Displaced Population
 	egen UNHCRtotal = rowtotal(refugees asylum_seekers IDPs OIPs stateless host others) 
 		la var UNHCRtotal "Total displaced from UNHCR"
 	gen CFfound_UNHCR = CFfound/UNHCRtotal
@@ -146,7 +146,7 @@ clear
 	gen completed_UNHCR = completed/UNHCRtotal
 		la var completed_UNHCR "DHS cases to UNHCR population ratio"
 		
-	// Representing CF outcome as percentage of DHS completed cases 
+	// Representing CF outcome as percentage of DHS completed cases
 	gen found_completed = CFfound/completed
 		la var found_completed "% cases CF found"
 	gen not_completed = CFnotfound/completed
@@ -165,9 +165,9 @@ clear
 	// Generating variable: basic representation of COVID-19 Pandemic
 	gen covid_year = 0
 		replace covid_year=1 if year>2019
-		la var covid_year "Indicator, Pre- or Post-Covid-19"
+		la var covid_year "Indicator of COVID-19"
 
-* Setting dataset as panel data 
+* Setting dataset as panel data
 	encode country, gen(country1)
 	xtset country1 year
 	xtdescribe
